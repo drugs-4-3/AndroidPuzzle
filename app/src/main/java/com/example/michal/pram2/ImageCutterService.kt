@@ -4,6 +4,9 @@ import android.graphics.Bitmap
 
 class ImageCutterService {
 
+    /**
+     * Given bitmap it cuts it into grid of dim*columns and dim*rows and returns them in array
+     */
     fun createBitmaps(sourceBitmap: Bitmap, dim: Int = 4): Array<Bitmap> {
 
         val singleGridWidth: Int = sourceBitmap.width / dim
