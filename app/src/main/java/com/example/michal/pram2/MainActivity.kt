@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 
+const val DRAWABLE_RESOURCE_MSG = "DRAWABLE_RESOURCE_MSG"
+
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,9 +15,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val playBtn: Button = findViewById(R.id.play_btn)
-        playBtn.setOnClickListener(View.OnClickListener {
-            val intent = Intent(this, PuzzleActivity::class.java)
+        playBtn.setOnClickListener() {
+            val intent = Intent(this, PuzzleActivity::class.java).apply {
+                putExtra(DRAWABLE_RESOURCE_MSG, Integer.toString(R.drawable.jeleniagora))
+            }
             startActivity(intent)
-        })
+        }
     }
 }

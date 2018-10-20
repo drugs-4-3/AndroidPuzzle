@@ -19,6 +19,7 @@
         android:id="@+id/sourceGrid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:stretchMode="columnWidth"
         android:numColumns="4"
         app:layout_constraintTop_toBottomOf="@id/destinationGrid"
         app:layout_constraintBottom_toBottomOf="parent"
