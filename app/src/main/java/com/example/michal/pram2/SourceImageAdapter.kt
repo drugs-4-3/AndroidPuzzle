@@ -18,8 +18,8 @@ import android.widget.Toast
 
 const val TAG = "IMAGE_PUZZLE_"
 
-class ImageAdapter(private val mContext: Context,
-                   private val bitmapArr: Array<Bitmap>) : BaseAdapter() {
+class SourceImageAdapter(private val mContext: Context,
+                         private val bitmapArr: Array<Bitmap>) : BaseAdapter() {
 
     override fun getCount(): Int = bitmapArr.size
 
@@ -49,6 +49,7 @@ class ImageAdapter(private val mContext: Context,
 
 
             setOnLongClickListener() {view ->
+
                 val item = ClipData.Item(view.tag as? CharSequence)
                 val dragData = ClipData(
                         view.tag as? CharSequence,
@@ -56,6 +57,8 @@ class ImageAdapter(private val mContext: Context,
                         item
                 )
                 val myShadow = MyDragShadowBuilder(this)
+
+                currentlyDraggedItem = position
                 view.startDrag(
                         dragData,   // the data to be dragged
                         myShadow,   // the drag shadow builder
@@ -121,13 +124,13 @@ class ImageAdapter(private val mContext: Context,
             }
 
             DragEvent.ACTION_DROP -> {
-                val item: ClipData.Item = event.clipData.getItemAt(0)
-                val dragData = item.text
+//                val item: ClipData.Item = event.clipData.getItemAt(0)
+//                val dragData = item.text
 
-                // Displays a message containing the dragged data.
-                Toast.makeText(this@ImageAdapter.mContext, "Dragged data is " + dragData, Toast.LENGTH_LONG).show()
-                (v as? ImageView)?.clearColorFilter()
-                v.invalidate()
+//                // Displays a message containing the dragged data.
+//                Toast.makeText(this@SourceImageAdapter.mContext, "Dragged data is " + dragData, Toast.LENGTH_LONG).show()
+//                (v as? ImageView)?.clearColorFilter()
+//                v.invalidate()
                 true
             }
 
@@ -136,10 +139,11 @@ class ImageAdapter(private val mContext: Context,
                 v.invalidate()
                 when(event.result) {
                     true ->
-                        Toast.makeText(this@ImageAdapter.mContext, "The drop was handled.", Toast.LENGTH_LONG)
+                        Toast.makeText(this@SourceImageAdapter.mContext, "The drop was handled.", Toast.LENGTH_LONG)
                     else ->
-                        Toast.makeText(this@ImageAdapter.mContext, "The drop didn't work.", Toast.LENGTH_LONG)
+                        Toast.makeText(this@SourceImageAdapter.mContext, "The drop didn't work.", Toast.LENGTH_LONG)
                 }.show()
+                currentlyDraggedItem = -1
                 true
             }
 

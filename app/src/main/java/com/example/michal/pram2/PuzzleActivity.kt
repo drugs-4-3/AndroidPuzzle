@@ -5,7 +5,12 @@ import android.graphics.BitmapFactory
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.GridView
-import kotlinx.android.synthetic.main.activity_puzzle.*
+
+/**
+ * index of puzzle that is currently being dragged by user
+ * if index in sourceGrid is equal to index in destGrid - then drop can be accepted
+ */
+var currentlyDraggedItem = -1
 
 class PuzzleActivity : AppCompatActivity() {
 
@@ -14,8 +19,14 @@ class PuzzleActivity : AppCompatActivity() {
         setContentView(R.layout.activity_puzzle)
 
         val sourceGrid: GridView = findViewById<GridView>(R.id.sourceGrid)
-        sourceGrid.adapter = ImageAdapter(this, getImgArr())
+        sourceGrid.adapter = SourceImageAdapter(this, getImgArr())
+
+        val destGrid: GridView = findViewById<GridView>(R.id.destinationGrid)
+        destGrid.adapter = DestinationImageAdapter(this, 16)
     }
+
+    // ogarnac design widoku -> zeby source i dest zajmowaly po polowe miejsca !!!
+
 
     fun getImgArr(): Array<Bitmap> {
         val msg: String = intent.getStringExtra(DRAWABLE_RESOURCE_MSG)
