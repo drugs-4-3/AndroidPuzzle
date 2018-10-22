@@ -2,6 +2,7 @@ package com.example.michal.pram2
 
 import android.content.ClipDescription
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.util.Log
 import android.view.DragEvent
@@ -9,7 +10,10 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 
-class DestinationDragListener(private val context: Context, private val position: Int): View.OnDragListener {
+class DestinationDragListener(
+        private val context: Context,
+        private val position: Int,
+        private val bitmap: Bitmap): View.OnDragListener {
 
     override fun onDrag(v: View, event: DragEvent): Boolean {
         // Handles each of the expected events
@@ -40,9 +44,7 @@ class DestinationDragListener(private val context: Context, private val position
 
             DragEvent.ACTION_DROP -> {
                 if (currentlyDraggedItem == position) {
-                    Toast.makeText(this@DestinationDragListener.context, "The drop was handled.", Toast.LENGTH_LONG)
-                    (v as? ImageView)?.setColorFilter(Color.GREEN)
-                    v.invalidate()
+                    (v as ImageView).setImageBitmap(bitmap)
                     true
                 } else {
                     false

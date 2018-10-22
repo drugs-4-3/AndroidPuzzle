@@ -19,20 +19,20 @@ class PuzzleActivity : AppCompatActivity() {
         setContentView(R.layout.activity_puzzle)
 
         val sourceGrid: GridView = findViewById<GridView>(R.id.sourceGrid)
-        sourceGrid.adapter = SourceImageAdapter(this, getImgArr())
+        sourceGrid.adapter = SourceImageAdapter(this, imgArr)
 
         val destGrid: GridView = findViewById<GridView>(R.id.destinationGrid)
-        destGrid.adapter = DestinationImageAdapter(this, 16)
+        destGrid.adapter = DestinationImageAdapter(this, 16, imgArr)
     }
 
     // ogarnac design widoku -> zeby source i dest zajmowaly po polowe miejsca !!!
 
 
-    fun getImgArr(): Array<Bitmap> {
+    private val imgArr: Array<Bitmap> by lazy {
         val msg: String = intent.getStringExtra(DRAWABLE_RESOURCE_MSG)
         val bitmap: Bitmap = BitmapFactory.decodeResource(resources, msg.toInt())
         val imgCutterService = ImageCutterService()
 
-        return imgCutterService.createBitmaps(bitmap)
+        imgCutterService.createBitmaps(bitmap)
     }
 }

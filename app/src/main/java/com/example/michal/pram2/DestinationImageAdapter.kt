@@ -13,7 +13,10 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.Toast
 
-class DestinationImageAdapter(private val mContext: Context, private val size: Int): BaseAdapter() {
+class DestinationImageAdapter(
+        private val mContext: Context,
+        private val size: Int,
+        private val imgArr: Array<Bitmap>): BaseAdapter() {
 
     override fun getCount(): Int = size
 
@@ -53,7 +56,7 @@ class DestinationImageAdapter(private val mContext: Context, private val size: I
             bitmap.eraseColor(Color.GRAY)
             setImageBitmap(bitmap)
 
-            setOnDragListener(DestinationDragListener(mContext, position))
+            setOnDragListener(DestinationDragListener(mContext, position, imgArr[position]))
         }
 
         return imageView
