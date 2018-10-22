@@ -24,13 +24,22 @@ class DestinationImageAdapter(private val mContext: Context, private val size: I
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val imageView: ImageView
         if (convertView == null) {
-            imageView = getEmptyView(position)
+            imageView = destinationImages[position]
         } else {
             imageView = convertView as ImageView
         }
         return imageView
     }
 
+    private val destinationImages: Array<ImageView> by lazy {
+        var result = Array<ImageView>(size, {ImageView(mContext)})
+        var i = 0
+        while (i < size) {
+            result[i] = getEmptyView(i)
+            i++
+        }
+        result
+    }
 
     fun getEmptyView(position: Int): ImageView {
         val imageView: ImageView = ImageView(mContext)

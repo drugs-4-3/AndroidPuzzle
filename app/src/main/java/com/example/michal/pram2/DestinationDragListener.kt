@@ -1,6 +1,5 @@
 package com.example.michal.pram2
 
-import android.content.ClipData
 import android.content.ClipDescription
 import android.content.Context
 import android.graphics.Color
@@ -17,8 +16,6 @@ class DestinationDragListener(private val context: Context, private val position
         return when (event.action) {
             DragEvent.ACTION_DRAG_STARTED -> {
                 if (event.clipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
-                    (v as? ImageView)?.setColorFilter(Color.BLUE)
-                    v.invalidate()
                     true
                 } else {
                     false
@@ -36,7 +33,7 @@ class DestinationDragListener(private val context: Context, private val position
             }
 
             DragEvent.ACTION_DRAG_EXITED -> {
-                (v as? ImageView)?.setColorFilter(Color.BLUE)
+                (v as? ImageView)?.clearColorFilter()
                 v.invalidate()
                 true
             }

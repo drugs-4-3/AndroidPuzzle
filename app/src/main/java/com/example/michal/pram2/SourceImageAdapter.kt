@@ -99,18 +99,10 @@ class SourceImageAdapter(private val mContext: Context,
         // Handles each of the expected events
         when (event.action) {
             DragEvent.ACTION_DRAG_STARTED -> {
-                if (event.clipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
-                    (v as? ImageView)?.setColorFilter(Color.BLUE)
-                    v.invalidate()
-                    true
-                } else {
-                    false
-                }
+                event.clipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)
             }
 
             DragEvent.ACTION_DRAG_ENTERED -> {
-                (v as? ImageView)?.setColorFilter(Color.GREEN)
-                v.invalidate()
                 true
             }
 
@@ -118,8 +110,6 @@ class SourceImageAdapter(private val mContext: Context,
                 true
 
             DragEvent.ACTION_DRAG_EXITED -> {
-                (v as? ImageView)?.setColorFilter(Color.BLUE)
-                v.invalidate()
                 true
             }
 
@@ -131,18 +121,11 @@ class SourceImageAdapter(private val mContext: Context,
 //                Toast.makeText(this@SourceImageAdapter.mContext, "Dragged data is " + dragData, Toast.LENGTH_LONG).show()
 //                (v as? ImageView)?.clearColorFilter()
 //                v.invalidate()
-                true
+                false
             }
 
             DragEvent.ACTION_DRAG_ENDED -> {
-                (v as? ImageView)?.clearColorFilter()
-                v.invalidate()
-                when(event.result) {
-                    true ->
-                        Toast.makeText(this@SourceImageAdapter.mContext, "The drop was handled.", Toast.LENGTH_LONG)
-                    else ->
-                        Toast.makeText(this@SourceImageAdapter.mContext, "The drop didn't work.", Toast.LENGTH_LONG)
-                }.show()
+                (v as ImageView).clearColorFilter()
                 currentlyDraggedItem = -1
                 true
             }
