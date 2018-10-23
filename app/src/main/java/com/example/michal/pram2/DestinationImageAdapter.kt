@@ -47,12 +47,15 @@ class DestinationImageAdapter(
     fun getEmptyView(position: Int): ImageView {
         val imageView: ImageView = ImageView(mContext)
 
+        val width = imgArr[0].width
+        val height = imgArr[0].height
+
         imageView.apply() {
             adjustViewBounds = true
             scaleType = ImageView.ScaleType.FIT_CENTER
             setPadding(2,2,2,2)
 
-            val bitmap: Bitmap = Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888)
+            val bitmap: Bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
             bitmap.eraseColor(Color.GRAY)
             setImageBitmap(bitmap)
 
