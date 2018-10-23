@@ -15,11 +15,38 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.Toast
+import java.util.*
 
 const val TAG = "IMAGE_PUZZLE_"
 
 class SourceImageAdapter(private val mContext: Context,
                          private val bitmapArr: Array<Bitmap>) : BaseAdapter() {
+
+    private val size: Int = bitmapArr.size
+
+    private val imageViews: Array<ImageView> by lazy {
+        val result: Array<ImageView> = Array<ImageView>(bitmapArr.size, {ImageView(mContext)})
+        var i = 0
+        while (i < bitmapArr.size) {
+            result[i] = makeDraggableImageView(i, orderedToUnordered.get(i)!!)
+            i++
+        }
+        result
+    }
+
+    private val orderedToUnordered: HashMap<Int, Int> by lazy {
+        var result: HashMap<Int, Int> = HashMap()
+        var i = 0
+        while (i < size) {
+            var rand = Random().nextInt(bitmapArr.size)
+            while (result.containsValue(rand)) {
+                rand = Random().nextInt(bitmapArr.size)
+            }
+            result.put(i, rand)
+            i++
+        }
+        result
+    }
 
     override fun getCount(): Int = bitmapArr.size
 
@@ -30,14 +57,14 @@ class SourceImageAdapter(private val mContext: Context,
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val imageView: ImageView
         if (convertView == null) {
-            imageView = makeDraggableImageView(position)
+            imageView = imageViews[position]
         } else {
             imageView = convertView as ImageView
         }
         return imageView
     }
 
-    fun makeDraggableImageView(position: Int): ImageView {
+    fun makeDraggableImageView(position: Int, correctPosition: Int): ImageView {
         val imageView = ImageView(mContext)
 
         imageView.apply {
@@ -45,7 +72,7 @@ class SourceImageAdapter(private val mContext: Context,
             adjustViewBounds = true
             scaleType = ImageView.ScaleType.FIT_CENTER
             setPadding(2,2,2,2)
-            setImageBitmap(bitmapArr[position])
+            setImageBitmap(bitmapArr[orderedToUnordered[position]!!])
 
 
             setOnLongClickListener() {view ->
@@ -58,7 +85,7 @@ class SourceImageAdapter(private val mContext: Context,
                 )
                 val myShadow = MyDragShadowBuilder(this)
 
-                currentlyDraggedItem = position
+                currentlyDraggedItem = orderedToUnordered[position]!!
                 view.startDrag(
                         dragData,   // the data to be dragged
                         myShadow,   // the drag shadow builder
@@ -66,7 +93,7 @@ class SourceImageAdapter(private val mContext: Context,
                         0           // flags (not currently used, set to 0)
                 )
             }
-            setOnDragListener(mDragListen)
+            setOnDragListener(SourceDragListener(mContext, position, orderedToUnordered[position]!!))
         }
         return imageView
     }
@@ -96,7 +123,6 @@ class SourceImageAdapter(private val mContext: Context,
 
     private val mDragListen = View.OnDragListener { v, event ->
 
-        // Handles each of the expected events
         when (event.action) {
             DragEvent.ACTION_DRAG_STARTED -> {
                 event.clipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)
@@ -114,13 +140,6 @@ class SourceImageAdapter(private val mContext: Context,
             }
 
             DragEvent.ACTION_DROP -> {
-//                val item: ClipData.Item = event.clipData.getItemAt(0)
-//                val dragData = item.text
-
-//                // Displays a message containing the dragged data.
-//                Toast.makeText(this@SourceImageAdapter.mContext, "Dragged data is " + dragData, Toast.LENGTH_LONG).show()
-//                (v as? ImageView)?.clearColorFilter()
-//                v.invalidate()
                 false
             }
 

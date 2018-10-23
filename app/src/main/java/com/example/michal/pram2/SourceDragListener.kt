@@ -10,10 +10,10 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 
-class DestinationDragListener(
+class SourceDragListener(
         private val context: Context,
         private val position: Int,
-        private val bitmap: Bitmap): View.OnDragListener {
+        private val correctPosition: Int): View.OnDragListener {
 
     override fun onDrag(v: View, event: DragEvent): Boolean {
         return when (event.action) {
@@ -42,12 +42,7 @@ class DestinationDragListener(
             }
 
             DragEvent.ACTION_DROP -> {
-                if (currentlyDraggedItem == position) {
-                    (v as ImageView).setImageBitmap(bitmap)
-                    true
-                } else {
-                    false
-                }
+                true
             }
 
             DragEvent.ACTION_DRAG_ENDED -> {
