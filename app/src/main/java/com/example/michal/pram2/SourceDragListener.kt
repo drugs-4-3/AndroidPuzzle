@@ -26,8 +26,6 @@ class SourceDragListener(
             }
 
             DragEvent.ACTION_DRAG_ENTERED -> {
-                (v as ImageView).setColorFilter(Color.YELLOW)
-                v.invalidate()
                 true
             }
 
@@ -36,8 +34,6 @@ class SourceDragListener(
             }
 
             DragEvent.ACTION_DRAG_EXITED -> {
-                (v as? ImageView)?.clearColorFilter()
-                v.invalidate()
                 true
             }
 
@@ -46,8 +42,10 @@ class SourceDragListener(
             }
 
             DragEvent.ACTION_DRAG_ENDED -> {
-                (v as? ImageView)?.clearColorFilter()
-                v.invalidate()
+                if (event.result && currentlyDraggedItem == correctPosition) {
+                    (v as ImageView).setColorFilter(Color.GRAY)
+                    v.invalidate()
+                }
                 true
             }
 
