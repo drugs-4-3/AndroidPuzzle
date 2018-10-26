@@ -38,7 +38,7 @@ class SourceDragListener(
             }
 
             DragEvent.ACTION_DROP -> {
-                true
+                false
             }
 
             DragEvent.ACTION_DRAG_ENDED -> {
